@@ -1,0 +1,90 @@
+---
+title: "Graph Convolutional Network (GCN)"
+author: "Xi Chen"
+date: "2018年6月26日"
+output: 
+  pdf_document: 
+    latex_engine: xelatex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## why GCN?
+
+**1** CNN cannot hold the characteristics of translation invariance on non-euclidean structure data
+
+**2** but we want to implement machine learning by fetching spatial features from this kind of topology data
+
+**3** Topology connects is actually one of generalized data structures (i.e spectral clustering)
+
+## How to extract spatial feature from non-euclidean structure data?
+
+From the perspective of spectral domain, researches went through Fourier Transformation, and convolution on graph, to Graph Convolutional Network which inspired by deep learning
+
+**Note:** Spectral graph theory: making use of the eigenvalues and eigenvectors of the Laplace matrix of the graph to explore what the graph brings us
+
+## why Laplace matrix plays critical role on GCN?
+
+Since GCN cannot pass Laplace matrix on Graph Fourier Transformation and the definition of Graph Conovolution, we would like to see what is Laplace matrix.
+
+There are mainly 3 versions:
+
+(1) $$L = D - A$$: Combinatorial Laplacian
+(2) $$L^{sys} = D^{\frac{-1}{2}}LD^{\frac{1}{2}}$$: Symmetric normalized Laplacian
+(3) $$L^{rw} = D^{-1}A$$: Random walk normalized Laplacian
+
+Great nature of Laplacian matrix:
+
+(1) The Laplace matrix is a symmetric matrix, which can be decomposed by eigenvalues
+(2) The Laplace matrix has only non-zero elements on 1-hop neighbor, and everything else is zero
+(3) Laplacian operator and Laplacian matrix are anology to each other
+
+## Decomposition of Laplace matrix
+
+The decomposition: 
+$$
+L=U\left[
+\begin{matrix}
+ \lambda_{1} & \dots &  0 \\
+  \vdots   & \ddots  & \vdots  \\
+ 0 & \dots & \lambda_{n}
+\end{matrix}
+\right]U^{-1}
+=U\left[
+\begin{matrix}
+ \lambda_{1} & \dots &  0 \\
+  \vdots   & \ddots  & \vdots  \\
+ 0 & \dots & \lambda_{n}
+\end{matrix}
+\right]U^{T}
+$$
+
+**Note** we have the orthogonal matrix, i.e $UU^{T}=E$
+
+## Fourier Transformation and convolution on GRAPH
+
+Classical Fourier Transformation: $$F(\omega)=F[f(t)]=\int f(t)e^{-i\omega\\t}\,dt$$
+
+Here, $e^{-i\omega\\t}$ is the eigenvalue function of Laplace operator, which leads to the relationship between $\omega$ and eigenvalue
+
+Generalized eigenvalue equation:
+$$AV=\lambda V$$
+Here are transformation, eigenvalue vector, and eigenvalue for $A V and \lambda$ respectively.
+
+We have $e^{-i\omega\\t}$ satisfied:
+$$\Delta e^{-i\omega\\t} = \frac{\partial^{2}}{\partial t^{2}} e^{-i\omega\\t} = -\omega^{2}e^{-i\omega\\t}$$
+$e^{-i\omega\\t}$ is the eigenvalue function of Tranformation $\Delta$, and $\omega$ has strong bond with eigenvalue.
+
+Now, when we turn to handle the Graph issue, Laplace matrix naturally brings us to find the eigenvector.
+
+So:
+$$LV=\lambda V$$
+
+$$ F(\lambda_{l}) = \hat{f}(\lambda_{l}) = \sum_{i=1}^Nf(i)u^{*}_{l}(i)$$
+
+$f$ is N dimension vector on Graph, $f(i)$ connected to vetexes correspondently, $u_{l}(i)$ is the ith component of lth eigenvector. Under $\lambda_{l}$, the Fourier transformation of f in Graph is the inner product of $\lambda_{l}$ and its eigenvector $u_{l}$
+
+
