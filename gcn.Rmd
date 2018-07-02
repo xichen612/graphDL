@@ -1,7 +1,7 @@
 ---
 title: "Graph Convolutional Network (GCN)"
 author: "Xi Chen"
-date: "2018年6月26日"
+date: "xchen595@163.com"
 output: 
   pdf_document: 
     latex_engine: xelatex
@@ -66,6 +66,10 @@ $$
 
 ## Fourier Transformation and convolution on GRAPH
 
+(1) Fourier Transformation on Graph
+
+- (a) Fourier Transformation
+
 Classical Fourier Transformation: $$F(\omega)=F[f(t)]=\int f(t)e^{-i\omega\\t}\,dt$$
 
 Here, $e^{-i\omega\\t}$ is the eigenvalue function of Laplace operator, which leads to the relationship between $\omega$ and eigenvalue
@@ -87,4 +91,158 @@ $$ F(\lambda_{l}) = \hat{f}(\lambda_{l}) = \sum_{i=1}^Nf(i)u^{*}_{l}(i)$$
 
 $f$ is N dimension vector on Graph, $f(i)$ connected to vetexes correspondently, $u_{l}(i)$ is the ith component of lth eigenvector. Under $\lambda_{l}$, the Fourier transformation of f in Graph is the inner product of $\lambda_{l}$ and its eigenvector $u_{l}$
 
+The matrix form of Fourier Transformation on Graph
 
+$$
+\left[
+\begin{matrix}
+ \hat{f}(\lambda_{1})  \\
+ \hat{f}(\lambda_{2})  \\ 
+  \vdots   \\
+ \hat{f}(\lambda_{N}) 
+\end{matrix}
+\right]
+=\left[
+\begin{matrix}
+ u_{1}(1) & u_{1}(2) & \dots &  u_{1}(N) \\
+ u_{2}(1) & u_{2}(2) & \dots &  u_{2}(N) \\
+  \vdots   & \vdots & \ddots  & \vdots  \\
+ u_{N}(1) & u_{N}(2) & \dots & u_{N}(N)
+\end{matrix}
+\right]
+\left[
+\begin{matrix}
+ f(1)  \\
+ f(2)  \\ 
+  \vdots   \\
+ f(N) 
+\end{matrix}
+\right]
+$$
+- (b) Inverse Fourier Transformation
+
+Similarily, we transfer the integration of frequence $\omega$, i.e. $$F^{-1}[F(\omega)]= \frac{1}{2II} \int F(\omega)e^{-i\omega\\t}\ d\omega $$ 
+
+to the sum of eigenvalue $\lambda_{l}$, $f(i)=\sum_{i=1}^N\hat{f}(\lambda_{l})u_{l}(i)$.
+
+And the matrix form,
+
+$$
+  \left[
+    \begin{matrix}
+    f(1)  \\
+    f(2)  \\ 
+    \vdots   \\
+    f(N) 
+    \end{matrix}
+    \right]
+=\left[
+  \begin{matrix}
+  u_{1}(1) & u_{1}(2) & \dots &  u_{1}(N) \\
+  u_{2}(1) & u_{2}(2) & \dots &  u_{2}(N) \\
+  \vdots   & \vdots & \ddots  & \vdots  \\
+  u_{N}(1) & u_{N}(2) & \dots & u_{N}(N)
+  \end{matrix}
+  \right]
+\left[
+  \begin{matrix}
+  \hat{f}(\lambda_{1})  \\
+  \hat{f}(\lambda_{2})  \\ 
+  \vdots   \\
+  \hat{f}(\lambda_{N}) 
+  \end{matrix}
+  \right]
+$$
+
+so $f=U\hat{f}$.
+
+(2) Convolution on Graph
+
+**Convolution theorem: the Fourier transform of the function convolution is the product of the Fourier transform of the function, that is, the convolution of $f(t)$ and $h(t)$ is the inverse transformation of the product of the Fourier transform of the function**
+
+$$f*h=F^{-1}[\hat{f}9\omega)\hat{h}(\omega)]=\frac{1}{2II}\int\hat{f}(\omega)\hat{h}(\omega)e^{i\omega t} d\omega$$
+
+So,
+
+$$
+  (f*h)_{G}
+=U\left[
+  \begin{matrix}
+  \hat{h}(\lambda_{1}) &  &   \\
+     & \ddots  &   \\
+   &   & \hat{h}(\lambda_{n})
+  \end{matrix}
+  \right]U^{T}f
+$$
+  
+**Note:** we also have $(f*h)_{G}=U((U^{T}h)hadamard product(U^{T}f))$
+  
+  
+## Why is the eigenvector of the Laplace matrix the basis for the Fourier transform? eigenvvalue stands for frequency.
+
+- (a) basis
+The Fourier Transform is actually, **representing any function as a linear combination of orthogonal functions, sine and cosine.**
+  
+then, $f=\hat{f}(1)u_{1}+\hat{f}(2)u_{2}+...+\hat{f}(n)u_{n}$  
+  
+Since we have linearly independent vectors in an n-dimensional space can form a basis for a space, and the eigenvectors of the Laplace matrix are also an orthonormal basis, and $(u_{1},u_{2}, ..., u_{n}$ is n-dimensianl linearly independent vectors on graph, any vector $f$ can be expressed like this combination.
+
+- (b) frequency
+  
+The n non-negative real eigenvalues of Laplace matrix L are arranged from small to large as $\lambda_1 \le \lambda_2 \le \cdots \le \lambda_n$, and the minimum eigenvalue, $\lambda_1=0$  
+
+And the n-dimensional space defined by graph, the smaller eigenvalue $\lambda_{l}$, the less information which means the corresponding basis $u_{l}$ weights can be ignored.
+
+y is $O(n)$
+- (3) better spatial localization, receptice field (weighted sum over K-hop neighbor, weights are $\alpha_k$)
+
+**CNN convolution essentially is the use of a Shared parameters of filter, by calculating the center pixel and adjacent pixels of the weighted space and to form feature map for feature extraction, the weighted coefficient is the convolution kernel weight coefficient**
+  
+Graph convolution's parameters is $diag(\hat{h}(\lambda_{l}))$ 
+
+- 1th generation of GCN:
+$$y_{output} = \sigma 
+\begin{Bmatrix}U
+\begin{Bmatrix}
+\theta_1 &  &   \\
+& \ddots  &   \\
+&   & \theta_n
+\end{Bmatrix}
+U^{T}x\end{Bmatrix}
+$$
+- 2nd generation of GCN:
+$$y_{output} = \sigma 
+\begin{Bmatrix}U
+\begin{Bmatrix}
+\sum_{j=1}^K \alpha_{j} \lambda^{j}_{l} &  &   \\
+& \ddots  &   \\
+&   & \sum_{j=1}^K \alpha_{j} \lambda^{j}_{n}
+\end{Bmatrix}
+U^{T}x\end{Bmatrix}
+$$
+Here we have,
+$$
+\begin{Bmatrix}
+\sum_{j=1}^K \alpha_{j} \lambda^{j}_{l} &  &   \\
+& \ddots  &   \\
+&   & \sum_{j=1}^K \alpha_{j} \lambda^{j}_{n}
+\end{Bmatrix} = \sum_{j=1}^K \alpha_{j} \Lambda^{j}
+$$
+
+and $L^{2} = U\Lambda U^{T}U\Lambda U^{T}=U\Lambda^{2}U^{T}, U^{T}U=E$
+
+then, 
+
+$$U\sum_{j=1}^K \alpha_{j} \lambda^{j}_{n}U^{T}=\sum_{j=1}^K \alpha_{j} U\lambda^{j}_{n}U^{T}= \sum_{j=1}^K \alpha_{j}L^{j}$$
+
+so,  $y_{output} = \sigma (\sum_{j=1}^K \alpha_{j} L^{j}x)$
+
+**This adventages can be summarized in:**
+
+- (1) there are only K parameters in convolution kernel
+- (2) Don't need matrix decomposition anymore, we switch into Lapacian matrix $L$ transformation, time complexit is $O(n)$
+- (3) spatial localization, receptive filed (weighted sum over K-hop neighbor feature, weights $\alpha_k$)
+
+
+
+  
