@@ -1,0 +1,94 @@
+---
+title: "GNN"
+author: "Xi Chen"
+date: "xchen595@163.com"
+output: 
+  pdf_document: 
+    latex_engine: xelatex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+**key words:**
+
+combinatorial generalization, relational inductive biases, Graph Network,
+
+## Graph Network Architectures
+
+**In general, the framework is agnostic to specific attribute representations and functional forms. (we focus mainly on deep learning architectures.)**
+
+Graph networks support highly flexible graph representations in two ways:
+- 1. in terms of the representation of the attributes; 
+- 2. in terms of the structure of the graph itself.
+
+
+### Attributes
+
+The requirements of the problem will often determine what representations should be used for the attributes.
+
+The output of a GN block can also be tailored to the demands of the task. In particular,
+
+- An edge-focused GN uses the edges as output, for example to make decisions about interactions among entities \emph{(Kipf et al., 2018; Hamrick et al., 2018)}.
+
+- A node-focused GN uses the nodes as output, for example to reason about physical systems \emph{(Battaglia et al., 2016; Chang et al., 2017; Wang et al., 2018b; Sanchez-Gonzalez et al., 2018)}.
+
+- A graph-focused GN uses the globals as output, for example to predict the potential energy of a physical system \emph{(Battaglia et al., 2016)}, the properties of a molecule \emph{(Gilmer et al., 2017)}, or answers to questions about a visual scene \emph{(Santoro et al., 2017)}.
+
+- both the output edge and global attributes to compute a policy over actions \emph{(Hamrick et al. 2018)}.
+
+### Graph structure
+
+There are generally two scenarios:
+
+- first, the input explicitly specifies the relational structure \emph{[knowledge graphs, social networks, parse trees, optimization problems, chemical graphs, road networks, and physical systems with known interactions.]}.
+
+- second, the relational structure must be inferred or assumed \emph{(Vaswani et al., 2017; Watters et al., 2017; Santoro et al., 2017; Wang et al., 2018c; Kipf et al., 2018)}.
+
+
+### Definition of "Graph"
+
+Within GN framework,
+
+A \emph{graph} is defined as a 3-tuple **G = (u, V, E)**. 
+
+- The **u** is a global attribute
+- $v = \{v_{i} \}_{i=1:N^{v}}$ is the set of nodes ($N^{v}$ is cardinality), where each $v_{i}$ is a node's attribute.
+- $E = \{(e_{k}, r_{k}, s_{k}) \}_{k=1:N^{e}}$ is the set of edges ($N^{e}$ is cardinality), where each $e_{k}$ is the edge's attribute, $r_{k}$ is the index of the receiver node, and $s_{k}$ is the index of the sender node.
+
+### GN block inner structure
+
+3 "update" function $\phi$ and 3 "aggregation" function $\rho$:
+
+$$
+e^{'}_{k} = \phi ^{e} (e_{k}, v_{r_{k}}, v_{s_{k}}, u)\  \  \  \  \  \  \bar e^{'}_{i} = \rho^{e \rightarrow v}(E^{'}_{i})
+$$
+$$
+v^{'}_{i} = \phi^{v} (\bar e_{i}^{'}, v_{i}, u) \  \  \  \  \  \  \bar e^{'} = \rho^{e \rightarrow u}(E^{'})
+$$
+$$
+u^{'} = \phi^{u} (\bar e^{'}, \bar v^{'}, u) \  \  \  \  \  \  \bar v^{'}_{i} = \rho^{v \rightarrow u}(V^{'})
+$$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
