@@ -11,9 +11,12 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-**key words:**
+\begin{center}
+{\bfseries Keywords} \\
 
-combinatorial generalization, relational inductive biases, Graph Network,
+combinatorial generalization, relational inductive biases, Graph Network
+\end{center}
+
 
 ## Graph Network Architectures
 
@@ -70,6 +73,22 @@ $$
 $$
 u^{'} = \phi^{u} (\bar e^{'}, \bar v^{'}, u) \  \  \  \  \  \  \bar v^{'}_{i} = \rho^{v \rightarrow u}(V^{'})
 $$
+
+### Design Principle behind GN
+
+1. flexible representations
+2. configurable within-block structure
+3. composable multi-block architectures
+
+### Open Questions
+
+- where do the grasphs come from that graph networks operate over (it is unclear the best ways to convert sensory data into more structured representations like graphs.)
+
+- many underlying graph structures are much more sparse than a fully connected graph (how to induce sparsity)
+
+- how to adaptively modify graph structures during the course of computation
+
+- further explore the interpretability of the behavior of graph networks
 
 
 
