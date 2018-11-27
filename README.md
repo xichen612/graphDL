@@ -10,3 +10,8 @@ from GCN to GNN
 ## GNN
 1. "Neural Relational Inference for Interacting Systems"
 2. "Relational inductive biasses, dep learning , and graph networks"
+
+## Graph Embbedding
+1. Node2Vec
+2. Line
+3. DeepWalk
