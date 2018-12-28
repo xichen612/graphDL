@@ -18,6 +18,6 @@ from GCN to GNN
 
 ## Method Comparison
 - LINE vs DeepWalk
-DeepWalk does not provide a clear objective that articulates what net- work properties are preserved.
-DeepWalk only applies to unweighted networks
-DeepWalk expects nodes with higher second-order proximity yield similar low-dimensional representations, while the LINE preserves both first-order and second-order proximities.
+(1). DeepWalk does not provide a clear objective that articulates what net- work properties are preserved.
+(2). DeepWalk only applies to unweighted networks
+(3). DeepWalk expects nodes with higher second-order proximity yield similar low-dimensional representations, while the LINE preserves both first-order and second-order proximities.
