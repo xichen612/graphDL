@@ -13,5 +13,11 @@ from GCN to GNN
 
 ## Graph Embbedding
 1. Node2Vec
-2. Line
-3. DeepWalk
+2. Line: 
+3. DeepWalk: Deploy a truncated random walk
+
+## Method Comparison
+- LINE vs DeepWalk
+DeepWalk does not provide a clear objective that articulates what net- work properties are preserved.
+DeepWalk only applies to unweighted networks
+DeepWalk expects nodes with higher second-order proximity yield similar low-dimensional representations, while the LINE preserves both first-order and second-order proximities.
